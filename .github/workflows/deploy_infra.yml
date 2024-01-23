@@ -76,5 +76,5 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_PROD_RG }}
         scope: 'resourcegroup'
         template: ./iac/main.bicep
-        parameters: 'env=prod'
+        parameters: 'env='
         failOnStdErr: false

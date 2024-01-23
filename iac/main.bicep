@@ -26,7 +26,7 @@ module appserviceback 'resources/app-service.bicep' = {
   name: 'deployAppServiceBackend'
   params: {
     appServiceName: '${prefix}${env}-${appName}-api'
-    servicePlanName: '${prefix}${env}-${appName}-srvplan'
+    servicePlanName: '${prefix}${env}${appName}-srvplan'
     location: location
   }
   dependsOn: [appserviceplan]
