@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 module appserviceplan 'resources/app-service-plan.bicep' = {
   name: 'deployServicePlan'
   params: {
-    servicePlanName: '${prefix}${env}-${appName}-srvplan'
+    servicePlanName: '${prefix}${env}${appName}-srvplan'
     location: location
   }
 }
@@ -15,8 +15,8 @@ module appserviceplan 'resources/app-service-plan.bicep' = {
 module appservicefront 'resources/app-service.bicep' = {
   name: 'deployAppServiceFront'
   params: {
-    appServiceName: '${prefix}${env}-${appName}'
-    servicePlanName: '${prefix}${env}-${appName}-srvplan'
+    appServiceName: '${prefix}${env}${appName}'
+    servicePlanName: '${prefix}${env}${appName}-srvplan'
     location: location
   }
   dependsOn: [appserviceplan]
@@ -25,7 +25,7 @@ module appservicefront 'resources/app-service.bicep' = {
 module appserviceback 'resources/app-service.bicep' = {
   name: 'deployAppServiceBackend'
   params: {
-    appServiceName: '${prefix}${env}-${appName}-api'
+    appServiceName: '${prefix}${env}${appName}-api'
     servicePlanName: '${prefix}${env}${appName}-srvplan'
     location: location
   }
