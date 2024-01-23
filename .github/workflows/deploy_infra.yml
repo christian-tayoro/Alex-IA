@@ -1,4 +1,4 @@
-name: Deploy AlexIA Infra
+name: Deploy AlexIA Infra 
 on:
   workflow_dispatch:
   push:
