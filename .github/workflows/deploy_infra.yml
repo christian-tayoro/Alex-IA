@@ -30,7 +30,7 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_DEV_RG }}
         scope: 'resourcegroup'
         template: ./iac/main.bicep
-        parameters: 'env=dev'
+        parameters: 'env=dev-'
         failOnStdErr: false
   build-and-deploy-to-test:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_TEST_RG }}
         scope: 'resourcegroup'
         template: ./iac/main.bicep
-        parameters: 'env=test'
+        parameters: 'env=test-'
         failOnStdErr: false
   build-and-deploy-to-prod:
     runs-on: ubuntu-latest
