@@ -30,7 +30,7 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_DEV_RG }}
         scope: 'resourcegroup'
         template: ./iac/main.bicep
-        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        parameters: 'env=dev'
         failOnStdErr: false
   build-and-deploy-to-test:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_TEST_RG }}
         scope: 'resourcegroup'
         template: ./iac/main.bicep
-        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        parameters: 'env=test'
         failOnStdErr: false
   build-and-deploy-to-prod:
     runs-on: ubuntu-latest
@@ -76,5 +76,5 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_PROD_RG }}
         scope: 'resourcegroup'
         template: ./iac/main.bicep
-        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        parameters: 'env=prod'
         failOnStdErr: false
