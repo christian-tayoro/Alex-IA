@@ -11,3 +11,23 @@ module appserviceplan 'resources/app-service-plan.bicep' = {
     location: location
   }
 }
+
+module appservicefront 'resources/app-service.bicep' = {
+  name: 'deployAppServiceFront'
+  params: {
+    appServiceName: '${prefix}${env}-${appName}'
+    servicePlanName: '${prefix}${env}-${appName}-srvplan'
+    location: location
+  }
+  dependsOn: [appserviceplan]
+}
+
+module appserviceback 'resources/app-service.bicep' = {
+  name: 'deployAppServiceBackend'
+  params: {
+    appServiceName: '${prefix}${env}-${appName}-api'
+    servicePlanName: '${prefix}${env}-${appName}-srvplan'
+    location: location
+  }
+  dependsOn: [appserviceplan]
+}
