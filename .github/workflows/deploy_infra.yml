@@ -1,0 +1,80 @@
+name: Deploy AlexIA Infra
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - develop
+      - 'feature/**'
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  build-and-deploy-to-dev:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Checkout code
+    - uses: actions/checkout@v3
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy Bicep file
+    - name: deploy to dev env
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_DEV_RG }}
+        scope: 'resourcegroup'
+        template: ./iac/main.bicep
+        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        failOnStdErr: false
+  build-and-deploy-to-test:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy-to-dev
+    steps:
+
+      # Checkout code
+    - uses: actions/checkout@v3
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy Bicep file
+    - name: deploy to test env
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_TEST_RG }}
+        scope: 'resourcegroup'
+        template: ./iac/main.bicep
+        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        failOnStdErr: false
+  build-and-deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy-to-test
+    steps:
+
+      # Checkout code
+    - uses: actions/checkout@v3
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy Bicep file
+    - name: deploy to test env
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_PROD_RG }}
+        scope: 'resourcegroup'
+        template: ./iac/main.bicep
+        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        failOnStdErr: false
