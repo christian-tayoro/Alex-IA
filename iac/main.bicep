@@ -4,7 +4,6 @@ param appName string = 'alexia'
 param location string = resourceGroup().location
 param objectid string = ''
 param secretName string = 'connectionstring'
-@secure()
 param secretValue string
 
 
