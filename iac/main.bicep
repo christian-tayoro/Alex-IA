@@ -1,11 +1,11 @@
 param env string = 'dev'
-param prefix string = 'cancentral-'
+param prefix string = 'cacntral-'
 param appName string = 'alexia'
 param location string = resourceGroup().location
 param objectid string = ''
 param secretName string = 'connectionstring'
 @secure()
-param secretValue string = ''
+param secretValue string
 
 
 module keyvault 'resources/keyvault.bicep' = {
