@@ -1,8 +1,23 @@
 param env string = 'dev'
-param prefix string = 'cancentral-'
+param prefix string = 'cactral-'
 param appName string = 'alexia'
 param location string = resourceGroup().location
+param objectid string = ''
+param secretName string = 'connectionstring'
+@secure()
+param secretValue string
 
+
+module keyvault 'resources/keyvault.bicep' = {
+  name: 'deployKeyvault'
+  params: {
+    location: location
+    keyVaultName: '${prefix}${env}${appName}-kv'
+    objectId: objectid
+    secretName: secretName
+    secretValue: secretValue
+  }
+}
 
 module appserviceplan 'resources/app-service-plan.bicep' = {
   name: 'deployServicePlan'
