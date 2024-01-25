@@ -4,7 +4,7 @@ param appName string = 'alexia'
 param location string = resourceGroup().location
 param objectid string = ''
 param secretName string = 'connectionstring'
-param secretValue string
+param secretValue string = 'aze123rty456'
 
 
 module keyvault 'resources/keyvault.bicep' = {
