@@ -1,5 +1,5 @@
 param env string = 'dev'
-param prefix string = 'cacntral-'
+param prefix string = 'cactral-'
 param appName string = 'alexia'
 param location string = resourceGroup().location
 param objectid string = ''
