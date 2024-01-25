@@ -30,6 +30,7 @@ param skuName string = 'standard'
 param secretName string
 
 @description('Specifies the value of the secret that you want to create.')
+@secure()
 param secretValue string
 
 resource kv 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
