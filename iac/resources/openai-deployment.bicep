@@ -3,11 +3,11 @@ param openaiName string
 param oaiDeploymentName string
 param oaiDeploymentSku string = 'Standard'
 
-resource openaiResource 'Microsoft.CognitiveServices/accounts@2022-03-01' existing = {
+resource openaiResource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' existing = {
   name: openaiName
 }
 
-resource open_ai_deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
+resource open_ai_deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
   name: oaiDeploymentName
   sku: {
     capacity: 1
