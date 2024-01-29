@@ -46,3 +46,12 @@ module appserviceback 'resources/app-service.bicep' = {
   }
   dependsOn: [appserviceplan]
 }
+
+module openai 'resources/openai-gpt4.bicep' = {
+  name: 'deployOpenAIGpt4'
+  params: {
+    name: '${prefix}${env}${appName}-openai'
+    sku: 'S0'
+    location: location
+  }
+}
