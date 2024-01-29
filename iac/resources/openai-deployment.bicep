@@ -18,7 +18,7 @@ resource open_ai_deployment 'Microsoft.CognitiveServices/accounts/deployments@20
    model: {
     format: 'OpenAI'
     name: 'gpt-4'
-    version: '6013'
+    version: '1106-preview'
    }
    raiPolicyName: 'Microsoft.Default'
    versionUpgradeOption: 'OnceCurrentVersionExpired'
