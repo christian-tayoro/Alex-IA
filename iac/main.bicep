@@ -51,6 +51,7 @@ module openai 'resources/openai-gpt4.bicep' = {
   name: 'deployOpenAIGpt4'
   params: {
     accounts_GMAOpenAI_name: '${prefix}${env}${appName}-openai'
+    location: 'canadaeast'
   }
 }
 
