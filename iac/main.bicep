@@ -73,3 +73,14 @@ module cosmosDbAcc 'resources/cosmos-db-account.bicep' = {
     location: location
   }
 }
+
+module cosmosDatabase 'resources/cosmos-db.bicep' = {
+  name: 'deployCosmosDatabase'
+  params: {
+    cosmosDbAccName: '${prefix}${env}${appName}-dbacc'
+    databaseName: 'alexia-db'
+  }
+  dependsOn: [
+    cosmosDbAcc
+  ]
+}
