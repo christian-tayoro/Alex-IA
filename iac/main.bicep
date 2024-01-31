@@ -50,17 +50,16 @@ module appserviceback 'resources/app-service.bicep' = {
 module openai 'resources/openai-gpt4.bicep' = {
   name: 'deployOpenAIGpt4'
   params: {
-    name: '${prefix}${env}${appName}-openai'
-    sku: 'S0'
+    accounts_GMAOpenAI_name: '${prefix}${env}${appName}-openai'
     location: location
   }
 }
 
-module openaiDeployment 'resources/openai-deployment.bicep' = {
-  dependsOn: [openai]
-  name: 'deployOpenAIDeployment'
-  params: {
-    oaiDeploymentName: 'openaiDeployment'
-    openaiName: '${prefix}${env}${appName}-openai'
-  }
-}
+// module openaiDeployment 'resources/openai-deployment.bicep' = {
+//   dependsOn: [openai]
+//   name: 'deployOpenAIDeployment'
+//   params: {
+//     oaiDeploymentName: 'openaiDeployment'
+//     openaiName: '${prefix}${env}${appName}-openai'
+//   }
+// }

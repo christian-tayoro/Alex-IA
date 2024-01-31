@@ -1,16 +1,15 @@
-param name string
-param location string
-param sku string
+param accounts_GMAOpenAI_name string
+param location string = resourceGroup().location
 
-resource open_ai 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
-  name: name
+resource accounts_GMAOpenAI_name_resource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
+  name: accounts_GMAOpenAI_name
   location: location
-  kind: 'OpenAI'
   sku: {
-    name: sku
+    name: 'S0'
   }
+  kind: 'OpenAI'
   properties: {
-    customSubDomainName: toLower(name)
+    customSubDomainName: toLower(accounts_GMAOpenAI_name)
     networkAcls: {
       defaultAction: 'Allow'
       virtualNetworkRules: []
