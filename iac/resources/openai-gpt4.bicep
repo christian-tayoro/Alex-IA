@@ -1,5 +1,5 @@
 param accounts_GMAOpenAI_name string
-param location string = resourceGroup().location
+param location string = 'canadaeast'
 
 resource accounts_GMAOpenAI_name_resource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
   name: accounts_GMAOpenAI_name
