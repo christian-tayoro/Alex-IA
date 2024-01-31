@@ -4,6 +4,7 @@ param appName string = 'alexia'
 param location string = resourceGroup().location
 param objectid string = ''
 param secretName string = 'connectionstring'
+param oaiDeploymentModel string = 'gpt-4-32k'
 @secure()
 param secretValue string
 
@@ -60,5 +61,6 @@ module openaiDeployment 'resources/openai-deployment.bicep' = {
   name: 'deployOpenAIDeployment'
   params: {
     openaiName: '${prefix}${env}${appName}-openai'
+    openaiDeploymentModel: oaiDeploymentModel
   }
 }

@@ -1,5 +1,6 @@
 
 param openaiName string
+param openaiDeploymentModel string
 
 resource openaiResource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' existing = {
   name: openaiName
@@ -15,7 +16,7 @@ resource accounts_GMAOpenAI_name_OpenAIGPT4 'Microsoft.CognitiveServices/account
   properties: {
     model: {
       format: 'OpenAI'
-      name: 'gpt-4-32k'
+      name: openaiDeploymentModel
       version: '0613'
     }
     versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
