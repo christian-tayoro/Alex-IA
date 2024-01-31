@@ -1,26 +1,25 @@
 
 param openaiName string
-param oaiDeploymentName string
-param oaiDeploymentSku string = 'Standard'
 
 resource openaiResource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' existing = {
   name: openaiName
 }
 
-resource open_ai_deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
-  name: oaiDeploymentName
-  sku: {
-    capacity: 1
-    name: oaiDeploymentSku
-  }
+resource accounts_GMAOpenAI_name_OpenAIGPT4 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
   parent: openaiResource
+  name: 'OpenAIGPT4'
+  sku: {
+    name: 'Standard'
+    capacity: 40
+  }
   properties: {
-   model: {
-    format: 'OpenAI'
-    name: 'gpt-4'
-    version: '1106-preview'
-   }
-   raiPolicyName: 'Microsoft.Default'
-   versionUpgradeOption: 'OnceCurrentVersionExpired'
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-4'
+      version: '0613'
+    }
+    versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
+    currentCapacity: 40
+    raiPolicyName: 'Microsoft.Default'
   }
 }
