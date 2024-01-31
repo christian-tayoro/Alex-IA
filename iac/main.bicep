@@ -1,9 +1,10 @@
 param env string = 'dev'
-param prefix string = 'canctl-'
+param prefix string = 'canctr-'
 param appName string = 'alexia'
 param location string = resourceGroup().location
 param objectid string = ''
 param secretName string = 'connectionstring'
+param oaiDeploymentModel string = 'gpt-4-32k'
 @secure()
 param secretValue string
 
@@ -45,4 +46,21 @@ module appserviceback 'resources/app-service.bicep' = {
     location: location
   }
   dependsOn: [appserviceplan]
+}
+
+module openai 'resources/openai-gpt4.bicep' = {
+  name: 'deployOpenAIGpt4'
+  params: {
+    accounts_GMAOpenAI_name: '${prefix}${env}${appName}-openai'
+    location: 'canadaeast'
+  }
+}
+
+module openaiDeployment 'resources/openai-deployment.bicep' = {
+  dependsOn: [openai]
+  name: 'deployOpenAIDeployment'
+  params: {
+    openaiName: '${prefix}${env}${appName}-openai'
+    openaiDeploymentModel: oaiDeploymentModel
+  }
 }
