@@ -55,10 +55,10 @@ module openai 'resources/openai-gpt4.bicep' = {
   }
 }
 
-// module openaiDeployment 'resources/openai-deployment.bicep' = {
-//   dependsOn: [openai]
-//   name: 'deployOpenAIDeployment'
-//   params: {
-//     openaiName: '${prefix}${env}${appName}-openai'
-//   }
-// }
+module openaiDeployment 'resources/openai-deployment.bicep' = {
+  dependsOn: [openai]
+  name: 'deployOpenAIDeployment'
+  params: {
+    openaiName: '${prefix}${env}${appName}-openai'
+  }
+}

@@ -7,7 +7,7 @@ resource openaiResource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview
 
 resource accounts_GMAOpenAI_name_OpenAIGPT4 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
   parent: openaiResource
-  name: 'OpenAIGPT4'
+  name: 'OpenAIGPT4-32k'
   sku: {
     name: 'Standard'
     capacity: 40
@@ -15,7 +15,7 @@ resource accounts_GMAOpenAI_name_OpenAIGPT4 'Microsoft.CognitiveServices/account
   properties: {
     model: {
       format: 'OpenAI'
-      name: 'gpt-4'
+      name: 'gpt-4-32k'
       version: '0613'
     }
     versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
