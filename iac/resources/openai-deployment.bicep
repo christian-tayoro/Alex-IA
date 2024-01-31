@@ -19,7 +19,6 @@ resource accounts_GMAOpenAI_name_OpenAIGPT4 'Microsoft.CognitiveServices/account
       version: '0613'
     }
     versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
-    currentCapacity: 40
     raiPolicyName: 'Microsoft.Default'
   }
 }

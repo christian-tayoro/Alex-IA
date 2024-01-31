@@ -1,7 +1,7 @@
 param env string = 'dev'
-param prefix string = 'eastus2-'
+param prefix string = 'caneast-'
 param appName string = 'alexia'
-param location string = 'eastus2'
+param location string = 'canadaeast'
 param objectid string = ''
 param secretName string = 'connectionstring'
 @secure()
