@@ -10,7 +10,7 @@ resource accounts_GMAOpenAI_name_OpenAIGPT4 'Microsoft.CognitiveServices/account
   name: 'OpenAIGPT4-32k'
   sku: {
     name: 'Standard'
-    capacity: 40
+    capacity: 25
   }
   properties: {
     model: {
