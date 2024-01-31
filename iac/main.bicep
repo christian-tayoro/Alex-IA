@@ -64,3 +64,23 @@ module openaiDeployment 'resources/openai-deployment.bicep' = {
     openaiDeploymentModel: oaiDeploymentModel
   }
 }
+
+module cosmosDbAcc 'resources/cosmos-db-account.bicep' = {
+  name: 'deployCosmosDbAccount'
+  params: {
+    accountName: '${prefix}${env}${appName}-dbacc'
+    primaryRegion: location
+    location: location
+  }
+}
+
+module cosmosDatabase 'resources/cosmos-db.bicep' = {
+  name: 'deployCosmosDatabase'
+  params: {
+    cosmosDbAccName: '${prefix}${env}${appName}-dbacc'
+    databaseName: 'alexia-db'
+  }
+  dependsOn: [
+    cosmosDbAcc
+  ]
+}
