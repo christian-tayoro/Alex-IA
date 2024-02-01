@@ -1,4 +1,4 @@
-name: AlexIA Build and Test
+name: AlexIA Build and Test (Backend)
 
 on:
   workflow_dispatch:
@@ -8,12 +8,12 @@ on:
       - develop
       - 'feature/**'
     paths:
-      - frontend/**
+      - backend/**
 
 env:
-  WEBAPP-NAME-DEV: canctr-dev-alexia
-  WEBAPP-NAME-TEST: canctr-test-alexia
-  WEBAPP-NAME-PROD: canctr-alexia
+  WEBAPP-NAME-DEV: canctr-dev-alexia-api
+  WEBAPP-NAME-TEST: canctr-test-alexia-api
+  WEBAPP-NAME-PROD: canctr-alexia-api
 
 jobs:
   #Build and test and publish .net web project in repository
@@ -30,17 +30,17 @@ jobs:
         include-prerelease: true
     #Build/Test/Publish the .net project
     - name: Build with dotnet
-      run: dotnet build ./frontend/AlexIA.Frontend.sln --configuration Release
+      run: dotnet build ./backend/AlexIA.Backend.sln --configuration Release
     - name: Test with dotnet
-      run: dotnet test ./frontend/AlexIA.Frontend.sln --configuration Release
+      run: dotnet test ./backend/AlexIA.Backend.sln --configuration Release
     - name: dotnet publish
-      run: dotnet publish ./frontend/AlexIA.Frontend/AlexIA.Frontend.csproj -c Release -o ${{env.DOTNET_ROOT}}/alexia_front
+      run: dotnet publish ./backend/AlexIA.Backend/AlexIA.Backend.csproj -c Release -o ${{env.DOTNET_ROOT}}/alexia_backend
     #upload the published website code artifacts
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
       with:
-        name: alexia_front
-        path: ${{env.DOTNET_ROOT}}/alexia_front
+        name: alexia_backend
+        path: ${{env.DOTNET_ROOT}}/alexia_backend
   # Use Bicep to publish alexia webapp
   deploy-to-dev:
     runs-on: ubuntu-latest
@@ -51,8 +51,8 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
-        name: alexia_front
-        path: alexia_front
+        name: alexia_backend
+        path: alexia_backend
             
     #Login in your azure subscription using a service principal
     - name: Azure Login
@@ -65,7 +65,7 @@ jobs:
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WEBAPP-NAME-DEV }}
-        package: alexia_front
+        package: alexia_backend
 
   deploy-to-test:
     runs-on: ubuntu-latest
@@ -76,8 +76,8 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
-        name: alexia_front
-        path: alexia_front
+        name: alexia_backend
+        path: alexia_backend
     
     #Login in your azure subscription using a service principal
     - name: Azure Login
@@ -90,7 +90,7 @@ jobs:
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WEBAPP-NAME-TEST }}
-        package: alexia_front
+        package: alexia_backend
 
   deploy-to-prod:
     runs-on: ubuntu-latest
@@ -103,8 +103,8 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
-        name: alexia_front
-        path: alexia_front
+        name: alexia_backend
+        path: alexia_backend
 
     #Login in your azure subscription using a service principal
     - name: Azure Login
@@ -117,7 +117,7 @@ jobs:
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WEBAPP-NAME-PROD }}
-        package: alexia_front
+        package: alexia_backend
 
 
 
