@@ -8,7 +8,7 @@ on:
       - develop
       - 'feature/**'
     paths:
-      - frontend
+      - frontend/**
 
 env:
   WEBAPP-NAME-DEV: canctr-dev-alexia

@@ -7,7 +7,7 @@ on:
       - develop
       - 'feature/**'
     paths:
-      - iac
+      - iac/**
 permissions:
   id-token: write
   contents: read
