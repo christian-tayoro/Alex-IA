@@ -1,0 +1,123 @@
+name: AlexIA Build and Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - develop
+      - 'feature/**'
+    paths:
+      - frontend
+
+env:
+  WEBAPP-NAME-DEV: canctr-dev-alexia
+  WEBAPP-NAME-TEST: canctr-test-alexia
+  WEBAPP-NAME-PROD: canctr-alexia
+
+jobs:
+  #Build and test and publish .net web project in repository
+  buildandtest:
+    runs-on: ubuntu-latest
+    steps:
+    #checkout the repository
+    - uses: actions/checkout@v2
+    #prepare runnuer for desired .net version SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
+        include-prerelease: true
+    #Build/Test/Publish the .net project
+    - name: Build with dotnet
+      run: dotnet build ./frontend/AlexIA.Frontend.sln --configuration Release
+    - name: Test with dotnet
+      run: dotnet test ./frontend/AlexIA.Frontend.sln --configuration Release
+    - name: dotnet publish
+      run: dotnet publish ./frontend/AlexIA.Frontend/AlexIA.Frontend.csproj -c Release -o ${{env.DOTNET_ROOT}}/alexia_front
+    #upload the published website code artifacts
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: alexia_front
+        path: ${{env.DOTNET_ROOT}}/alexia_front
+  # Use Bicep to publish alexia webapp
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    needs: buildandtest
+    steps:
+        
+    #Download the publish files created from previous job
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: alexia_front
+        path: alexia_front
+            
+    #Login in your azure subscription using a service principal
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    #Publish website to Azure App Service (Dev)
+    - name: Publish Website to WebApp (Front)
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WEBAPP-NAME-DEV }}
+        package: alexia_front
+
+  deploy-to-test:
+    runs-on: ubuntu-latest
+    needs: deploy-to-dev
+    steps:
+
+    #Download the publish files created from previous job
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: alexia_front
+        path: alexia_front
+    
+    #Login in your azure subscription using a service principal
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    #Publish website to Azure App Service (Dev)
+    - name: Publish Website to WebApp (Front)
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WEBAPP-NAME-TEST }}
+        package: alexia_front
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-to-test
+    environment:
+      name: 'Production'
+    steps:
+        
+    #Download the publish files created from previous job
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: alexia_front
+        path: alexia_front
+
+    #Login in your azure subscription using a service principal
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    #Publish website to Azure App Service (Dev)
+    - name: Publish Website to WebApp (Front)
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WEBAPP-NAME-PROD }}
+        package: alexia_front
+
+
+
