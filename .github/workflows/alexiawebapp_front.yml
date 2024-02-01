@@ -50,7 +50,8 @@ jobs:
     - name: Publish Website to WebApp (Front)
       uses: Azure/webapps-deploy@v2
       with:
-          app-name: ${{ env.WEBAPP-NAME-DEV }}
+        app-name: ${{ env.WEBAPP-NAME-DEV }}
+        package: alexia_front
 
   deploy-to-test:
     runs-on: ubuntu-latest
@@ -69,6 +70,7 @@ jobs:
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WEBAPP-NAME-TEST }}
+        package: alexia_front
 
   deploy-to-prod:
     runs-on: ubuntu-latest
@@ -86,7 +88,8 @@ jobs:
     - name: Publish Website to WebApp (Front)
       uses: Azure/webapps-deploy@v2
       with:
-          app-name: ${{ env.WEBAPP-NAME-PROD }}
+        app-name: ${{ env.WEBAPP-NAME-PROD }}
+        package: alexia_front
 
 
 
