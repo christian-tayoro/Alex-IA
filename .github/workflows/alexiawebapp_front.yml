@@ -1,0 +1,41 @@
+name: AlexIA Build and Test
+
+on: [push, workflow_dispatch]
+
+env:
+  RESOURCE-GROUP-DEV: cancentral-dev-alexia-rg
+  RESOURCE-GROUP-TEST: cancentral-test-alexia-rg
+  RESOURCE-GROUP-PROD: cancentral-prod-alexia-rg
+  LOCATION : canadacentral
+  SUBSCRIPTION-ID: d4f08c06-03c1-43bf-bfc1-325aad3fa288
+  WEBAPP-NAME-DEV: canctr-dev-alexia
+  WEBAPP-NAME-TEST: canctr-test-alexia
+  WEBAPP-NAME-PROD: canctr-alexia
+
+jobs:
+  #Build and test and publish .net web project in repository
+  buildandtest:
+    runs-on: ubuntu-latest
+    steps:
+    #checkout the repository
+    - uses: actions/checkout@v2
+    #prepare runnuer for desired .net version SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '7.0.x'
+        include-prerelease: true
+    #Build/Test/Publish the .net project
+    - name: Build with dotnet
+      run: dotnet build ./frontend/AlexIA.Frontend.sln --configuration Release
+    - name: Test with dotnet
+      run: dotnet test ./frontend/AlexIA.Frontend.sln --configuration Release
+    - name: dotnet publish
+      run: dotnet publish ./frontend/AlexIA.Frontend/AlexIA.Frontend.csproj -c Release -o ${{env.DOTNET_ROOT}}/alexia_front
+    #upload the published website code artifacts
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: alexia_front
+        path: ${{env.DOTNET_ROOT}}/alexia_front
+
