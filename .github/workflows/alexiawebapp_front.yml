@@ -1,6 +1,14 @@
 name: AlexIA Build and Test
 
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - develop
+      - 'feature/**'
+    paths:
+      - frontend
 
 env:
   WEBAPP-NAME-DEV: canctr-dev-alexia
