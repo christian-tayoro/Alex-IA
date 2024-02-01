@@ -3,11 +3,6 @@ name: AlexIA Build and Test
 on: [push, workflow_dispatch]
 
 env:
-  RESOURCE-GROUP-DEV: cancentral-dev-alexia-rg
-  RESOURCE-GROUP-TEST: cancentral-test-alexia-rg
-  RESOURCE-GROUP-PROD: cancentral-prod-alexia-rg
-  LOCATION : canadacentral
-  SUBSCRIPTION-ID: d4f08c06-03c1-43bf-bfc1-325aad3fa288
   WEBAPP-NAME-DEV: canctr-dev-alexia
   WEBAPP-NAME-TEST: canctr-test-alexia
   WEBAPP-NAME-PROD: canctr-alexia
@@ -38,4 +33,60 @@ jobs:
       with:
         name: alexia_front
         path: ${{env.DOTNET_ROOT}}/alexia_front
+  # Use Bicep to publish alexia webapp
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    needs: buildandtest
+    steps:
+        
+    #Download the publish files created from previous job
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: alexia_front
+        path: alexia_front
+            
+    #Publish website to Azure App Service (Dev)
+    - name: Publish Website to WebApp (Front)
+      uses: Azure/webapps-deploy@v2
+      with:
+          app-name: ${{ env.WEBAPP-NAME-DEV }}
+
+  deploy-to-test:
+    runs-on: ubuntu-latest
+    needs: deploy-to-dev
+    steps:
+
+    #Download the publish files created from previous job
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: alexia_front
+        path: alexia_front
+    
+    #Publish website to Azure App Service (Dev)
+    - name: Publish Website to WebApp (Front)
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WEBAPP-NAME-TEST }}
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-to-test
+    steps:
+        
+    #Download the publish files created from previous job
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: alexia_front
+        path: alexia_front
+            
+    #Publish website to Azure App Service (Dev)
+    - name: Publish Website to WebApp (Front)
+      uses: Azure/webapps-deploy@v2
+      with:
+          app-name: ${{ env.WEBAPP-NAME-PROD }}
+
+
 
