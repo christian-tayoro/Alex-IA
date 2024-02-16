@@ -14,7 +14,7 @@ module acr 'resources/acr.bicep' = {
   name: 'deployACR'
   params: {
     location: location
-    acrName: '${prefix}${appName}-acr'
+    acrName: '${appName}acr'
   }
   dependsOn:[storageAcc]
 }
