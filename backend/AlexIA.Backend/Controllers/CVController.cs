@@ -13,6 +13,12 @@ namespace AlexIA.Backend.Controllers
         private readonly string CosmosDBAccountPrimaryKey = "A7IRAusDlJ741D0rIHvBw0Yp6KlAtWJ2DaNOmhi5LWWX1bEkRJhAfL2uVPVy4AxSFPIoL3FLl3s3ACDbOg3OHg==";
         private readonly string CosmosDbName = "alexia-db";
         private readonly string CosmosDbContainerName = "cv";
+        private readonly FileService _fileService;
+
+        public CVController(FileService fileService)
+        {
+            _fileService = fileService;
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddCV(CVModel newCV)
@@ -29,6 +35,36 @@ namespace AlexIA.Backend.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListAllBlobs()
+        {
+            var result = await _fileService.ListAsync();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            var result = await _fileService.UploadAsync(file);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("filename")]
+        public async Task<IActionResult> Download(string filename)
+        {
+            var result = await _fileService.DownloadAsync(filename);
+            return File(result.Content, result.ContentType, result.Name);
+        }
+
+        [HttpDelete]
+        [Route("filename")]
+        public async Task<IActionResult> Delete(string filename)
+        {
+            var result = await _fileService.DeleteAsync(filename);
+            return Ok(result);
         }
 
         #region Fonction Annexes
