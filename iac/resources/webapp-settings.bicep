@@ -10,11 +10,11 @@ resource webAppSettings 'Microsoft.Web/sites/config@2018-11-01' = {
   name: '${webAppName}/appsettings'
   properties: {
     ASPNETCORE_ENVIRONMENT: 'Production'
-    CosmosDBAccountUri: csDBAccountURI
-    CosmosDBAccountPrimaryKey: csDBPrimaryKey
-    CosmosDbContainerName: csDBContainerName
-    CosmosDbName: csDBName
-    StorageAccountName: strAccName
+    AzureAd__CosmosDBAccountUri: csDBAccountURI
+    AzureAd__CosmosDBAccountPrimaryKey: csDBPrimaryKey
+    AzureAd__CosmosDbContainerName: csDBContainerName
+    AzureAd__CosmosDbName: csDBName
+    AzureAd__StorageAccountName: strAccName
     StrAccKey: strAccKey
   }
 }
