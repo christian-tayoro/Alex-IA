@@ -7,7 +7,7 @@ param secretName string = 'connectionstring'
 param oaiDeploymentModel string = 'gpt-4-32k'
 @secure()
 param secretValue string
-param strAccKey string = ''
+param strAccKey string = 'qqMMyPExpWDDBFZ/vRyL/xsHSNISzRxyalIDcgvv5pGYJ0JwMY1i9fjLgYrRxg/0x1s4wDvyxb8L+AStzt+GxA=='
 
 
 module keyvault 'resources/keyvault.bicep' = {
