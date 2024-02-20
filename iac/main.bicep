@@ -7,6 +7,7 @@ param secretName string = 'connectionstring'
 param oaiDeploymentModel string = 'gpt-4-32k'
 @secure()
 param secretValue string
+param strAccKey string = ''
 
 
 module keyvault 'resources/keyvault.bicep' = {
@@ -20,12 +21,38 @@ module keyvault 'resources/keyvault.bicep' = {
   }
 }
 
+module cosmosDbAcc 'resources/cosmos-db-account.bicep' = {
+  name: 'deployCosmosDbAccount'
+  params: {
+    accountName: '${prefix}${env}${appName}-dbacc'
+    primaryRegion: location
+    location: location
+  }
+  dependsOn: [
+    keyvault
+  ]
+}
+
+module cosmosDatabase 'resources/cosmos-db.bicep' = {
+  name: 'deployCosmosDatabase'
+  params: {
+    cosmosDbAccName: '${prefix}${env}${appName}-dbacc'
+    databaseName: 'alexia-db'
+  }
+  dependsOn: [
+    cosmosDbAcc
+  ]
+}
+
 module appserviceplan 'resources/app-service-plan.bicep' = {
   name: 'deployServicePlan'
   params: {
     servicePlanName: '${prefix}${env}${appName}-srvplan'
     location: location
   }
+  dependsOn: [
+    cosmosDatabase
+  ]
 }
 
 module appservicefront 'resources/app-service.bicep' = {
@@ -48,6 +75,20 @@ module appserviceback 'resources/app-service.bicep' = {
   dependsOn: [appserviceplan]
 }
 
+module appservicebacksettings 'resources/webapp-settings.bicep' = {
+  name: 'deployAppServiceBackendSettings'
+  params: {
+    webAppName: '${prefix}${env}${appName}-api'
+    csDBAccountURI: 'https://${prefix}${env}${appName}-dbacc.documents.azure.com:443/'
+    csDBContainerName: 'cv'
+    csDBName: 'alexia-db'
+    csDBPrimaryKey: cosmosDbAcc.outputs.cosmosDbAccountPK
+    strAccName: '${appName}acc'
+    strAccKey: strAccKey
+  }
+  dependsOn: [appserviceback]
+} 
+
 module openai 'resources/openai-gpt4.bicep' = {
   name: 'deployOpenAIGpt4'
   params: {
@@ -63,24 +104,4 @@ module openaiDeployment 'resources/openai-deployment.bicep' = {
     openaiName: '${prefix}${env}${appName}-openai'
     openaiDeploymentModel: oaiDeploymentModel
   }
-}
-
-module cosmosDbAcc 'resources/cosmos-db-account.bicep' = {
-  name: 'deployCosmosDbAccount'
-  params: {
-    accountName: '${prefix}${env}${appName}-dbacc'
-    primaryRegion: location
-    location: location
-  }
-}
-
-module cosmosDatabase 'resources/cosmos-db.bicep' = {
-  name: 'deployCosmosDatabase'
-  params: {
-    cosmosDbAccName: '${prefix}${env}${appName}-dbacc'
-    databaseName: 'alexia-db'
-  }
-  dependsOn: [
-    cosmosDbAcc
-  ]
 }

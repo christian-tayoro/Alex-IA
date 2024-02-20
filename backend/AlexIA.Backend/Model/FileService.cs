@@ -6,12 +6,17 @@ namespace AlexIA.Backend.Model
 {
     public class FileService
     {
-        private readonly string _storageAccount = "alexiaacc";
-        private readonly string _key = "qqMMyPExpWDDBFZ/vRyL/xsHSNISzRxyalIDcgvv5pGYJ0JwMY1i9fjLgYrRxg/0x1s4wDvyxb8L+AStzt+GxA==";
+        public IConfiguration Configuration { get; }
+        private readonly string _storageAccount;
+        private readonly string _key;
         private readonly BlobContainerClient _filesContainer;
 
-        public FileService()
+        public FileService(IConfiguration configuration)
         {
+            Configuration = configuration;
+            _storageAccount = Configuration.GetValue<string>("AzureAd:StorageAccountName");
+            _key = Configuration.GetValue<string>("AzureAd:StrAccKey");
+
             var credential = new StorageSharedKeyCredential(_storageAccount, _key);
             var blobUri = $"https://{_storageAccount}.blob.core.windows.net";
             var blobServiceClient = new BlobServiceClient(new Uri(blobUri), credential);
@@ -80,8 +85,8 @@ namespace AlexIA.Backend.Model
             BlobClient file = _filesContainer.GetBlobClient(blobFileName);
 
             await file.DeleteAsync();
-            
-            return new BlobResponseDto { Error = false, Status = $"File: {blobFileName} has been successfully deleted."};
+
+            return new BlobResponseDto { Error = false, Status = $"File: {blobFileName} has been successfully deleted." };
         }
 
     }

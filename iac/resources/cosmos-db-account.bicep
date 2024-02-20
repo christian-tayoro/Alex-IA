@@ -75,3 +75,4 @@ resource account 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
 }
 
 output cosmosDbAccountConnectionString string = 'AccountEndpoint=https://${account.name}.documents.azure.com:443/;AccountKey=${listKeys(resourceId(resourceGroup().name, 'Microsoft.DocumentDB/databaseAccounts', account.name), '2022-05-15').primaryMasterKey};'
+output cosmosDbAccountPK string ='${listKeys(resourceId(resourceGroup().name, 'Microsoft.DocumentDB/databaseAccounts', account.name), '2022-05-15').primaryMasterKey}'

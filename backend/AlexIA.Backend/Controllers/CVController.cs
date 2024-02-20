@@ -9,10 +9,10 @@ namespace AlexIA.Backend.Controllers
     [ApiController]
     public class CVController : ControllerBase
     {
-        private readonly string CosmosDBAccountUri = "https://canctr-dev-alexia-dbacc.documents.azure.com:443/";
-        private readonly string CosmosDBAccountPrimaryKey = "A7IRAusDlJ741D0rIHvBw0Yp6KlAtWJ2DaNOmhi5LWWX1bEkRJhAfL2uVPVy4AxSFPIoL3FLl3s3ACDbOg3OHg==";
-        private readonly string CosmosDbName = "alexia-db";
-        private readonly string CosmosDbContainerName = "cv";
+        private readonly string CosmosDBAccountUri = Environment.GetEnvironmentVariable("AzureAd:CosmosDBAccountUri");
+        private readonly string CosmosDBAccountPrimaryKey = Environment.GetEnvironmentVariable("AzureAd:CosmosDBAccountPrimaryKey");
+        private readonly string CosmosDbName = Environment.GetEnvironmentVariable("AzureAd:CosmosDbName");
+        private readonly string CosmosDbContainerName = Environment.GetEnvironmentVariable("AzureAd:CosmosDbContainerName");
         private readonly FileService _fileService;
 
         public CVController(FileService fileService)
@@ -45,7 +45,7 @@ namespace AlexIA.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload([FromForm]IFormFile file)
+        public async Task<IActionResult> Upload(IFormFile file)
         {
             var result = await _fileService.UploadAsync(file);
             return Ok(result);
