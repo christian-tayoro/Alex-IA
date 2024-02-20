@@ -15,6 +15,6 @@ resource webAppSettings 'Microsoft.Web/sites/config@2018-11-01' = {
     AzureAd__CosmosDbContainerName: csDBContainerName
     AzureAd__CosmosDbName: csDBName
     AzureAd__StorageAccountName: strAccName
-    StrAccKey: strAccKey
+    AzureAd__StrAccKey: strAccKey
   }
 }
