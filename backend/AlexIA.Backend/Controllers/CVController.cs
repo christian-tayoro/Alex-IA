@@ -45,7 +45,7 @@ namespace AlexIA.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload(IFormFile file)
+        public async Task<IActionResult> Upload([FromForm]IFormFile file)
         {
             var result = await _fileService.UploadAsync(file);
             return Ok(result);

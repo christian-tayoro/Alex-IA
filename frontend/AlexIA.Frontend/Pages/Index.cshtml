@@ -4,7 +4,53 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<br />
+<div class="container row p-0 m-0">
+    <div class="col-10">
+        <h2 class="text-info">CVs List</h2>
+    </div>
+    <div class="col-2">
+        <a asp-page="Privacy" class="btn btn-info form-control text-white">Add a Curriculum Vitae</a>
+    </div>
+    <div class="col-12 border p-3 mt-3">
+        <form method="post">
+            @if(Model.cvList.Count()>0)
+            {
+                <table class="table table-striped border">
+
+                    <tr class="table-secondary">
+                        <th>
+                            <label asp-for="cvList.FirstOrDefault().Name"></label>
+                        </th>
+                        <th>
+                            <label asp-for="cvList.FirstOrDefault().Uri"></label>
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.cvList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Uri)
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm">Download</button>
+                                <button class="btn btn-danger btn-sm text-white">Delete</button>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+            else
+            {
+                <p>No CVs Available.</p>
+            }
+        </form>
+    </div>
 </div>

@@ -1,8 +1,30 @@
 ﻿@page
 @model PrivacyModel
+@using AlexIA.Frontend.Model
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<br />
+<div class="container row p-0 m-0">
+    <div class="col-10">
+        <h2 class="text-info">Upload CV</h2>
+    </div>
+    <div class="col-2">
+        
+    </div>
+    <div class="col-12 border p-3 mt-3">
+        <form enctype="multipart/form-data" method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <label asp-for="FileUpload.FormFile"></label>
+                    <input type="file" asp-for="FileUpload.FormFile" class="form-control" />
+                    <span class="alert-danger" asp-validation-for="FileUpload.FormFile"></span>
+                </div>
+            </div>
+            <br />
+            <input type="submit" value="Upload" class="btn btn-primary" />
+            <a asp-page="Index" class="btn btn-info text-white">Cancel</a>
+        </form>
+    </div>
+</div>
