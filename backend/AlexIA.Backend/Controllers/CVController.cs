@@ -9,15 +9,21 @@ namespace AlexIA.Backend.Controllers
     [ApiController]
     public class CVController : ControllerBase
     {
-        private readonly string CosmosDBAccountUri = Environment.GetEnvironmentVariable("AzureAd:CosmosDBAccountUri");
-        private readonly string CosmosDBAccountPrimaryKey = Environment.GetEnvironmentVariable("AzureAd:CosmosDBAccountPrimaryKey");
-        private readonly string CosmosDbName = Environment.GetEnvironmentVariable("AzureAd:CosmosDbName");
-        private readonly string CosmosDbContainerName = Environment.GetEnvironmentVariable("AzureAd:CosmosDbContainerName");
+        private readonly string CosmosDBAccountUri;
+        private readonly string CosmosDBAccountPrimaryKey;
+        private readonly string CosmosDbName;
+        private readonly string CosmosDbContainerName;
+        public IConfiguration Configuration { get; }
         private readonly FileService _fileService;
 
-        public CVController(FileService fileService)
+        public CVController(FileService fileService, IConfiguration configuration)
         {
             _fileService = fileService;
+            Configuration = configuration;
+            CosmosDBAccountUri = Configuration.GetValue<string>("AzureAd:CosmosDBAccountUri");
+            CosmosDBAccountPrimaryKey = Configuration.GetValue<string>("AzureAd:CosmosDBAccountPrimaryKey");
+            CosmosDbName = Configuration.GetValue<string>("AzureAd:CosmosDbName");
+            CosmosDbContainerName = Configuration.GetValue<string>("AzureAd:CosmosDbContainerName");
         }
 
         [HttpPost]
