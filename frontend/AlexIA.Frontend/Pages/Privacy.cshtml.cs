@@ -1,6 +1,7 @@
 ﻿using AlexIA.Frontend.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -9,16 +10,19 @@ namespace AlexIA.Frontend.Pages
 {
     public class PrivacyModel : PageModel
     {
-        private readonly string apiUri = Environment.GetEnvironmentVariable("AzureAd:ApiUriBaseAdress");
+        public IConfiguration Configuration { get; }
+        private readonly string apiUri;
         private readonly ILogger<PrivacyModel> _logger;
         BlobResponseDto resultat = new BlobResponseDto();
 
         [BindProperty]
         public BufferedSingleFileUpload FileUpload { get; set; }
 
-        public PrivacyModel(ILogger<PrivacyModel> logger)
+        public PrivacyModel(ILogger<PrivacyModel> logger, IConfiguration configuration)
         {
             _logger = logger;
+            Configuration = configuration;
+            apiUri = Configuration.GetValue<string>("AzureAd:ApiUriBaseAdress");
         }
 
         public void OnGet()
