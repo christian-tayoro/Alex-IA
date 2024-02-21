@@ -8,6 +8,7 @@ namespace AlexIA.Frontend.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly string apiUri = Environment.GetEnvironmentVariable("AzureAd:ApiUriBaseAdress");
         private readonly ILogger<IndexModel> _logger;
         public List<BlobDto> cvList = new List<BlobDto>();
 
@@ -20,7 +21,8 @@ namespace AlexIA.Frontend.Pages
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("http://localhost:5000/api/CV/ListAllBlobs"))
+                httpClient.BaseAddress = new Uri(apiUri);
+                using (var response = await httpClient.GetAsync("/api/CV/ListAllBlobs"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     this.cvList = JsonConvert.DeserializeObject<List<BlobDto>>(apiResponse);

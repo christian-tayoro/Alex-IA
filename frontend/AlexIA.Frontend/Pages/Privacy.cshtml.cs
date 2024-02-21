@@ -9,6 +9,7 @@ namespace AlexIA.Frontend.Pages
 {
     public class PrivacyModel : PageModel
     {
+        private readonly string apiUri = Environment.GetEnvironmentVariable("AzureAd:ApiUriBaseAdress");
         private readonly ILogger<PrivacyModel> _logger;
         BlobResponseDto resultat = new BlobResponseDto();
 
@@ -82,7 +83,7 @@ namespace AlexIA.Frontend.Pages
 
             var httpClient = new HttpClient()
             {
-                BaseAddress = new Uri("https://localhost:7030")
+                BaseAddress = new Uri(apiUri)
             };
 
             var response = await httpClient.PostAsync($"/api/CV/Upload", form);
@@ -97,7 +98,7 @@ namespace AlexIA.Frontend.Pages
         {
             var httpClient = new HttpClient()
             {
-                BaseAddress = new Uri("https://localhost:7030")
+                BaseAddress = new Uri(apiUri)
             };
             StringContent content = new StringContent(JsonConvert.SerializeObject(cv), Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync($"/api/CV/AddCV", content);

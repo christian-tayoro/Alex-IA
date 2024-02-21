@@ -65,6 +65,21 @@ module appservicefront 'resources/app-service.bicep' = {
   dependsOn: [appserviceplan]
 }
 
+module appservicefrontsettings 'resources/webapp-settings.bicep' = {
+  name: 'deployAppServiceFrontendSettings'
+  params: {
+    webAppName: '${prefix}${env}${appName}'
+    csDBAccountURI: 'https://${prefix}${env}${appName}-dbacc.documents.azure.com:443/'
+    csDBContainerName: 'cv'
+    csDBName: 'alexia-db'
+    csDBPrimaryKey: cosmosDbAcc.outputs.cosmosDbAccountPK
+    strAccName: '${appName}acc'
+    strAccKey: strAccKey
+    apiUriBaseAdress: 'https://${prefix}${env}${appName}-api.azurewebsites.net'
+  }
+  dependsOn: [appservicefront]
+} 
+
 module appserviceback 'resources/app-service.bicep' = {
   name: 'deployAppServiceBackend'
   params: {
@@ -85,9 +100,10 @@ module appservicebacksettings 'resources/webapp-settings.bicep' = {
     csDBPrimaryKey: cosmosDbAcc.outputs.cosmosDbAccountPK
     strAccName: '${appName}acc'
     strAccKey: strAccKey
+    apiUriBaseAdress: 'https://${prefix}${env}${appName}-api.azurewebsites.net'
   }
   dependsOn: [appserviceback]
-} 
+}
 
 module openai 'resources/openai-gpt4.bicep' = {
   name: 'deployOpenAIGpt4'

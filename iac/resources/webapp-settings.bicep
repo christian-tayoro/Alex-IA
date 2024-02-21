@@ -5,6 +5,7 @@ param csDBContainerName string
 param csDBName string
 param strAccName string
 param strAccKey string
+param apiUriBaseAdress string
 
 resource webAppSettings 'Microsoft.Web/sites/config@2018-11-01' = {
   name: '${webAppName}/appsettings'
@@ -16,5 +17,6 @@ resource webAppSettings 'Microsoft.Web/sites/config@2018-11-01' = {
     AzureAd__CosmosDbName: csDBName
     AzureAd__StorageAccountName: strAccName
     AzureAd__StrAccKey: strAccKey
+    AzureAd__ApiUriBaseAdress: apiUriBaseAdress
   }
 }
