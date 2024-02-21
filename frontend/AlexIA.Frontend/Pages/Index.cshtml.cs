@@ -8,13 +8,16 @@ namespace AlexIA.Frontend.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly string apiUri = Environment.GetEnvironmentVariable("AzureAd:ApiUriBaseAdress");
+        public IConfiguration Configuration { get; }
+        private readonly string apiUri;
         private readonly ILogger<IndexModel> _logger;
         public List<BlobDto> cvList = new List<BlobDto>();
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
         {
             _logger = logger;
+            Configuration = configuration;
+            apiUri = Configuration.GetValue<string>("AzureAd:ApiUriBaseAdress");
         }
 
         public async Task OnGetAsync()
